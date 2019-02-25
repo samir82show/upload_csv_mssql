@@ -11,13 +11,13 @@ import time
 
 
 today = time.strftime("%Y-%m-%d") + "%"
-server = "MV3WSQLD02TRVC2\\SHDSQLTRN2"
-user = "StorageUser"
-password = "Sidra123$"
-conn = pymssql.connect(server, user, password, "STRGOPS", port = "1434")
+server = "Servername\\InstanceName"
+user = "Username"
+password = "Password"
+conn = pymssql.connect(server, user, password, "DBname", port = "portnumber")
 
 #df = pd.read_csv(args["csvreport"])
-df = pd.read_csv("/mnt/ALL_Jobs_Summary.csv")
+df = pd.read_csv("/CSV_file_full_path")
 
 site = df["Object"].str.split(":", n = 2, expand = True)[0]
 domains = df["Object"].str.split(":", n = 2, expand = True)[2].str.split(":", n = 1, expand = True)[0]
@@ -43,7 +43,7 @@ for index,row in df.iterrows():
 	cursor.execute("INSERT INTO dbo.BackupStatus(Server, domains, groups, completed, succeeded, failed, Size_in_GB) VALUES (%s, %s, %s, %d, %d, %d, %d)", \
 	 (row["site"], row["domains"], row["groups"], row["Completed"], row["Succeeded"], row["Failed"], row["Size (GB)"]))
 
-cursor.execute("SELECT COUNT(*) FROM dbo.BackupStatus")
+cursor.execute("SELECT COUNT(*) FROM table")
 
 for i in cursor: print(i[0])
 
